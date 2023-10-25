@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+  background-color: inherit;
+  box-sizing: border-box;
+
+  font-family: var(--ft-normal);
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  all: unset;
+  font-family: var(--ft-bold);
+  font-size: var(--ft-size-large);
+}
+
+a {
+  text-decoration: inherit;
+}
+
+button {
+  border: none;
+}
+
+input {
+  border: none;
+}
+
+input[type="button"] {
+  cursor: pointer;
+}
+
+textarea {
+  border: none;
+  resize: none;
+}
+
+ul {
+  list-style: none;
+}
+
+/* focus */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus {
+  /* outline: solid 1px ; */
+}

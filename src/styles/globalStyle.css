@@ -1,0 +1,20 @@
+@import './font.css';
+
+:root {
+  --ft-light: 'Pretendard-Light';
+  --ft-regular: 'Pretendard-Regular';
+  --ft-normal: 'Pretendard-Normal';
+  --ft-bold: 'Pretendard-Bold';
+  --ft-bolder: 'Pretendard-Bolder';
+
+  --ft-mono: 'JetBrains Mono', monospace;
+  --ft-mono-style-italic: italic;
+  --ft-mono-weight-normal: 100;
+  --ft-mono-weight-bold: 300;
+
+  --ft-size-small: 10px;
+  --ft-size-regular: 12px;
+  --ft-size-medium: 14px;
+  --ft-size-large: 16px;
+  --ft-size-huge: 18px;
+}

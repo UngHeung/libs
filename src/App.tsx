@@ -1,6 +1,7 @@
 import React from "react";
-import "./App.css";
 import AppRouter from "./router/AppRouter";
+import "./styles/globalStyle.css";
+import "./styles/reset.css";
 
 function App() {
   return <AppRouter />;
