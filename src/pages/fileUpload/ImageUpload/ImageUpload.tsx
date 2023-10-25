@@ -64,20 +64,27 @@ const ImageUpload = () => {
       </ButtonSection>
 
       <PreviewSection>
-        {previewImage ? <img src={previewImage} alt="사용자 등록 이미지" /> : <span>등록된 이미지가 없습니다.</span>}
-        <ul>
+        <ImagesUl>
+          {previewImage ? (
+            <ImageLi key={"upload_image_0"}>
+              <img src={previewImage} alt="사용자 등록 이미지" />
+            </ImageLi>
+          ) : (
+            <span>등록된 이미지가 없습니다.</span>
+          )}
+
           {previewImages.length ? (
             previewImages.map((item, idx) => {
               return (
-                <li key={`upload_image_${idx}`}>
+                <ImageLi key={`upload_image_${idx + 1}`}>
                   <img src={item} alt={`사용자 등록 이미지 ${idx}번`} />
-                </li>
+                </ImageLi>
               );
             })
           ) : (
             <span>등록된 이미지가 없습니다.</span>
           )}
-        </ul>
+        </ImagesUl>
       </PreviewSection>
     </>
   );
@@ -105,6 +112,19 @@ const PreviewSection = styled.section`
     object-fit: cover;
     border-radius: 5px;
   }
+`;
+
+const ImagesUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+`;
+
+const ImageLi = styled.li`
+  height: 150px;
 `;
 
 const ButtonSection = styled.section``;
