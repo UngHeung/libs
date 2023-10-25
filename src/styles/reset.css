@@ -5,6 +5,7 @@
   box-sizing: border-box;
 
   font-family: var(--ft-normal);
+  font-size: var(--ft-size-medium);
   color: inherit;
 }
 
@@ -31,6 +32,8 @@ input {
   border: none;
 }
 
+a,
+button,
 input[type="button"] {
   cursor: pointer;
 }
