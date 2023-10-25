@@ -8,7 +8,8 @@ const ImageUpload = () => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const limit = 10; // 이미지 최대 업로드 개수
 
-  const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 이미지 업로드
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const multiple = e.target.multiple;
 
     switch (multiple) {
@@ -27,6 +28,16 @@ const ImageUpload = () => {
     }
   };
 
+  // 이미지 삭제
+  const deleteImage = (deleteImageIdx: number) => {
+    // 파일 삭제
+    setImages(images.filter((item, idx) => deleteImageIdx !== idx && item));
+
+    // 미리보기 삭제
+    setPreviewImages(previewImages.filter((item, idx) => deleteImageIdx !== idx && item));
+  };
+
+  // 미리보기 생성기
   const previewImageGenerator = (type = true, files: File[]) => {
     const images: string[] = (!type && previewImages) || []; // 기존 이미지에 새 이미지 추가
     const newImages = [];
@@ -37,10 +48,10 @@ const ImageUpload = () => {
     }
 
     if (type) {
-      // 1장일 때
+      // 단일
       setPreviewImage(newImages[0]);
     } else {
-      // 여러장일 때
+      // 복수
       setPreviewImages([...images, ...newImages].splice(0, limit));
     }
   };
@@ -50,14 +61,14 @@ const ImageUpload = () => {
       <h2>이미지 업로드</h2>
 
       <ButtonSection>
-        <InvisibleInput id="single_image" type="file" accept="image/*" onChange={handleClick} />
+        <InvisibleInput id="single_image" type="file" accept="image/*" onChange={handleUpload} />
         <StyledLabel htmlFor="single_image">{`업로드(${image ? 1 : 0}개)`}</StyledLabel>
         <InvisibleInput
           id="multiple_images"
           type="file"
           accept="image/*"
           multiple
-          onChange={handleClick}
+          onChange={handleUpload}
           disabled={images.length >= limit}
         />
         <StyledLabel htmlFor="multiple_images">{`업로드(${images.length}개)`}</StyledLabel>
@@ -65,25 +76,26 @@ const ImageUpload = () => {
 
       <PreviewSection>
         <ImagesUl>
-          {previewImage ? (
+          {/* 이미지 등록 여부 */}
+          {!previewImage && !previewImages.length && <span>등록된 이미지가 없습니다.</span>}
+
+          {/* 단일 이미지 */}
+          {previewImage && (
             <ImageLi key={"upload_image_0"}>
               <img src={previewImage} alt="사용자 등록 이미지" />
             </ImageLi>
-          ) : (
-            <span>등록된 이미지가 없습니다.</span>
           )}
 
-          {previewImages.length ? (
+          {/* 복수 이미지 */}
+          {previewImages.length !== 0 &&
             previewImages.map((item, idx) => {
               return (
                 <ImageLi key={`upload_image_${idx + 1}`}>
+                  <DeleteButton onClick={() => deleteImage(idx)}>x</DeleteButton>
                   <img src={item} alt={`사용자 등록 이미지 ${idx}번`} />
                 </ImageLi>
               );
-            })
-          ) : (
-            <span>등록된 이미지가 없습니다.</span>
-          )}
+            })}
         </ImagesUl>
       </PreviewSection>
     </>
@@ -124,7 +136,20 @@ const ImagesUl = styled.ul`
 `;
 
 const ImageLi = styled.li`
+  position: relative;
   height: 150px;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+  line-height: 5px;
 `;
 
 const ButtonSection = styled.section``;
