@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import Styled from "./ImageUploadStyled";
 
-const ImageUpload = () => {
+const ImageUpload = ({ limit }: { limit: number }) => {
   const [image, setImage] = useState<File | null>(null); // 단일 업로드
   const [images, setImages] = useState<File[]>([]); // 복수 업로드
   const [previewImage, setPreviewImage] = useState("");
   const [previewImages, setPreviewImages] = useState<string[]>([]);
-  const limit = 10; // 이미지 최대 업로드 개수
 
   // 이미지 업로드
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +39,7 @@ const ImageUpload = () => {
   // 미리보기 생성기
   const previewImageGenerator = (type = true, files: File[]) => {
     const images: string[] = (!type && previewImages) || []; // 기존 이미지에 새 이미지 추가
-    const newImages = [];
+    const newImages: string[] = [];
 
     for (const file of files) {
       let previewImageUrl = URL.createObjectURL(file);
@@ -60,10 +59,10 @@ const ImageUpload = () => {
     <>
       <h2>이미지 업로드</h2>
 
-      <ButtonSection>
-        <InvisibleInput id="single_image" type="file" accept="image/*" onChange={handleUpload} />
-        <StyledLabel htmlFor="single_image">{`업로드(${image ? 1 : 0}개)`}</StyledLabel>
-        <InvisibleInput
+      <Styled.ButtonSection>
+        <Styled.InvisibleInput id="single_image" type="file" accept="image/*" onChange={handleUpload} />
+        <Styled.StyledLabel htmlFor="single_image">{`업로드(${image ? 1 : 0}개)`}</Styled.StyledLabel>
+        <Styled.InvisibleInput
           id="multiple_images"
           type="file"
           accept="image/*"
@@ -71,93 +70,35 @@ const ImageUpload = () => {
           onChange={handleUpload}
           disabled={images.length >= limit}
         />
-        <StyledLabel htmlFor="multiple_images">{`업로드(${images.length}개)`}</StyledLabel>
-      </ButtonSection>
+        <Styled.StyledLabel htmlFor="multiple_images">{`업로드(${images.length}개)`}</Styled.StyledLabel>
+      </Styled.ButtonSection>
 
-      <PreviewSection>
-        <ImagesUl>
+      <Styled.PreviewSection>
+        <Styled.ImagesUl>
           {/* 이미지 등록 여부 */}
           {!previewImage && !previewImages.length && <span>등록된 이미지가 없습니다.</span>}
 
           {/* 단일 이미지 */}
           {previewImage && (
-            <ImageLi key={"upload_image_0"}>
+            <Styled.ImageLi key={"upload_image_0"}>
               <img src={previewImage} alt="사용자 등록 이미지" />
-            </ImageLi>
+            </Styled.ImageLi>
           )}
 
           {/* 복수 이미지 */}
           {previewImages.length !== 0 &&
             previewImages.map((item, idx) => {
               return (
-                <ImageLi key={`upload_image_${idx + 1}`}>
-                  <DeleteButton onClick={() => deleteImage(idx)}>x</DeleteButton>
+                <Styled.ImageLi key={`upload_image_${idx + 1}`}>
+                  <Styled.DeleteButton onClick={() => deleteImage(idx)}>x</Styled.DeleteButton>
                   <img src={item} alt={`사용자 등록 이미지 ${idx}번`} />
-                </ImageLi>
+                </Styled.ImageLi>
               );
             })}
-        </ImagesUl>
-      </PreviewSection>
+        </Styled.ImagesUl>
+      </Styled.PreviewSection>
     </>
   );
 };
 
 export default ImageUpload;
-
-const StyledLabel = styled.label`
-  display: inline-block;
-  width: 100px;
-  height: 30px;
-  margin-right: 10px;
-  padding: 5px;
-  border: 1px solid #333;
-  border-radius: 5px;
-  text-align: center;
-  line-height: 18px;
-  cursor: pointer;
-`;
-
-const PreviewSection = styled.section`
-  & img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-`;
-
-const ImagesUl = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-`;
-
-const ImageLi = styled.li`
-  position: relative;
-  height: 150px;
-`;
-
-const DeleteButton = styled.button`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: white;
-  text-align: center;
-  line-height: 5px;
-`;
-
-const ButtonSection = styled.section``;
-
-const InvisibleInput = styled.input`
-  display: none;
-  &:disabled + ${StyledLabel} {
-    text-decoration: line-through;
-    cursor: default;
-  }
-`;
